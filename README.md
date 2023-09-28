@@ -36,7 +36,7 @@ Il corretto funzionamento del bot richiede che siano definite le seguenti variab
 |```SECRET_ACCESS_KEY```     | AWS Secret Access Key                                   |
 |```TOKEN```                 | Token del bot Telegram                                  |
 |```CHANNEL_ID```            | ID del canale dove appariranno gli annunci              |
-|```CONTROL_GROUP_ID```      | ID del gruppo di discussione del canale                 |
+|```CONTROL_GROUP_ID```      | ID del gruppo di controllo dei membri                   |
 
 
 ### Configurazione generale
