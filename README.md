@@ -2,17 +2,16 @@
 ## Descrizione
 
 Questo bot è stato progettato per gestire gli annunci relativi allo scambio dei turni di lavoro. Gli annunci inseriti dagli utenti verranno pubblicati su un canale di cui **il bot deve essere amministratore**.\
-L'applicazione è eseguita tramite una Lambda Function di AWS e utilizza un API Gateway come trigger per ricevere gli aggiornamenti da Telegram.\
+L'applicazione è eseguita tramite una Lambda Function di AWS e utilizza un API Gateway come trigger per ricevere gli aggiornamenti da Telegram ed un EventBridge come trigger temporale per la pulizia degli annunci scaduti.\
 Inoltre, memorizza dati su due tabelle all'interno di Amazon DynamoDB: _announce_ per gli annunci del bot e _persistence_ per la persistenza delle conversazioni.\
-\
-__Per l'eliminazione automatica degli annunci scaduti dal canale é necessario configurare [cambio-turni-clean](https://github.com/genox997/cambio-turni-clean).__
+
 ## Prerequisiti
 
 Prima di procedere con la configurazione del bot, è necessario soddisfare i seguenti prerequisiti:
 
 1. **Bot Telegram**: Deve essere già stato creato e configurato un bot Telegram. Per le istruzioni su come creare un bot Telegram, consultare la [documentazione ufficiale](https://core.telegram.org/bots#how-do-i-create-a-bot).
-
-2. **Account AWS**: È richiesto un account Amazon Web Services (AWS) per l'esecuzione di questa applicazione. Se non si possiede ancora un account AWS, è possibile registrarne uno seguendo il processo di registrazione disponibile sul [sito web di AWS](https://aws.amazon.com/).
+2. **Canale e Gruppo di Controllo**: Deve essere giá stato creato il canale Telegram dove verranno pubblicati gli annunci ed il gruppo Telegram di controllo dei membri. Il bot deve essere amministratore sia del canale che del gruppo.
+3. **Account AWS**: È richiesto un account Amazon Web Services (AWS) per l'esecuzione di questa applicazione. Se non si possiede ancora un account AWS, è possibile registrarne uno seguendo il processo di registrazione disponibile sul [sito web di AWS](https://aws.amazon.com/).
 
 
 ## Configurazione della Lambda Function
@@ -77,6 +76,12 @@ La risposta dovrebbe essere simile a questa:
 ```{"ok":true,"result":true,"description":"Webhook was set"}```
 
 Si possono verificare le informazioni relative al webhook aprendo l'URL https://api.telegram.org/bot[TOKEN]/getWebhookInfo.
+
+## Configurazione dell'EventBridge
+
+Per fare in modo che gli annunci scaduti vengano automaticamente eliminati, è necessario configurare un trigger EventBridge (CloudWatch Events) per la Lambda Function dalla sezione Triggers.
+
+Il Trigger dovrá avere come schedule expression: ```cron(0 2 * * ? *)```, questo avvierá l'azione di pulizia avverrá ogni giorno alle 02:00.
 
 ## Licenza
 
