@@ -15,8 +15,8 @@ logger = Log()
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
     """Avvia la conversazione (solo se l'utente appartiene al gruppo di controllo). Chiede all'utente di inserire il suo nome se non l'ha giá fatto. """
     group_id = get_control_id()
-    chat_member = await context.bot.get_chat_member(user_id=update.message.from_user.id, chat_id=group_id)
-    if (not chat_member.status in ['creator', 'administrator', 'member'] or  update.message.chat.type != "private") and update.message.from_user.id != 97420187:
+    chat_member = await context.bot.get_chat_member(user_id=update.message.from_user.id, chat_id=int(group_id))
+    if not chat_member.status in ['creator', 'administrator', 'member'] or  update.message.chat.type != "private":
         print("not a member")
         return ConversationHandler.END
     context.user_data.pop("new_announce", None)

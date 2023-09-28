@@ -100,7 +100,45 @@ async def main(event, context):
             'statusCode': 500,
             'body': 'Failure'
         }
+async def clean_old_announces(event, context):
+    token = get_token()
+    channel_id = get_channel()
+
+    if not token:
+        return {
+            'statusCode': 500,
+            'body': 'Failure'
+        }
+
+    application = Application.builder().token(token).build()
+    with Database() as db:
+        now = datetime.now().timestamp()
+        ids = db.get_past_announces(now)
+
+        if ids:
+            for i in ids:
+                try:
+                    await application.bot.delete_message(chat_id=channel_id, message_id=int(i))
+                    db.set_deleted(int(i))
+
+                except BadRequest:
+                    try:
+                        await application.bot.edit_message_text("Annuncio non disponibile o scaduto 🧹",
+                                                                chat_id=channel_id, message_id=int(i))
+                        db.set_deleted(int(i))
+
+                    except Exception as e:
+                        print(e)
+    return {
+        'statusCode': 200,
+        'body': 'Success'
+    }
 
 
 def lambda_handler(event, context):
-    return asyncio.get_event_loop().run_until_complete(main(event, context))
+    if 'source' in event and event['source'] == 'aws.events':
+        logger.info(f"arrivato messaggio {event['source']} {context}")
+
+        return asyncio.get_event_loop().run_until_complete(clean_old_announces(event,context))
+    else:
+        return asyncio.get_event_loop().run_until_complete(main(event, context))
