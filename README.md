@@ -81,7 +81,7 @@ Si possono verificare le informazioni relative al webhook aprendo l'URL https://
 
 Per fare in modo che gli annunci scaduti vengano automaticamente eliminati, è necessario configurare un trigger EventBridge (CloudWatch Events) per la Lambda Function dalla sezione Triggers.
 
-Il Trigger dovrá avere come schedule expression: ```cron(0 2 * * ? *)```, questo avvierá l'azione di pulizia avverrá ogni giorno alle 02:00.
+Il trigger dovrá avere come schedule expression: ```cron(0 2 * * ? *)```, questo avvierá l'azione di pulizia avverrá ogni giorno alle 02:00.
 
 ## Licenza
 
