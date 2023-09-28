@@ -98,7 +98,7 @@ class Database:
                """
         try:
             response = self.table.scan(
-                FilterExpression=Attr('date_end').between(1, int(timestamp) & Attr('deleted').eq(0)))
+                FilterExpression=Attr('date_end').between(1, int(timestamp)) & Attr('deleted').eq(0))
         except ClientError as err:
             logger.error(
                 f"Couldn't query for announces expired in {timestamp}. Here's why: {err.response['Error']['Code']}: {err.response['Error']['Message']}")
