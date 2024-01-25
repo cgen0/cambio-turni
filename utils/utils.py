@@ -35,12 +35,18 @@ def get_channel():
 
 
 def validate_date_and_guess_year(date_text):
-    """Sets current year to parsed date if day and month are bigger than today's,
-     otherwise sets year as next year. Returns None if string is not correctly formatted"""
+    """Sets the current year to the parsed date if the day and month are later than today's;
+    otherwise, sets the year to the next year. Returns None if the string is not correctly formatted.
+
+    Note: Appending a leap year ("1904") to the date string prevents a ValueError for date_text=="29/02".
+    """
+    # Appending a leap year ("1904") to the date string
+    date_text += "/1904"
     try:
-        date = datetime.strptime(date_text, '%d/%m')
+        date = datetime.strptime(date_text, '%d/%m/%Y')
         today = datetime.now()
-        t = datetime(day=today.day, month=today.month, year=1900)
+        # 1904 is a leap year unlike 1900, so it does not throw a ValueError if today is 29/02.
+        t = datetime(day=today.day, month=today.month, year=1904)
         if date < t:
             date = datetime(day=date.day, month=date.month, year=today.year + 1)
         else:
