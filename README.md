@@ -36,7 +36,7 @@ Il corretto funzionamento del bot richiede che siano definite le seguenti variab
 |```SECRET_ACCESS_KEY```     | AWS Secret Access Key                                   |
 |```TOKEN```                 | Token del bot Telegram                                  |
 |```CHANNEL_ID```            | ID del canale dove appariranno gli annunci              |
-|```CONTROL_GROUP_ID```      | ID del gruppo di discussione del canale                 |
+|```CONTROL_GROUP_ID```      | ID del gruppo di controllo dei membri                   |
 
 
 ### Configurazione generale
@@ -81,7 +81,7 @@ Si possono verificare le informazioni relative al webhook aprendo l'URL https://
 
 Per fare in modo che gli annunci scaduti vengano automaticamente eliminati, è necessario configurare un trigger EventBridge (CloudWatch Events) per la Lambda Function dalla sezione Triggers.
 
-Il Trigger dovrá avere come schedule expression: ```cron(0 2 * * ? *)```, questo avvierá l'azione di pulizia avverrá ogni giorno alle 02:00.
+Il trigger dovrá avere come schedule expression: ```cron(0 2 * * ? *)```, questo avvierá l'azione di pulizia avverrá ogni giorno alle 02:00.
 
 ## Licenza
 
